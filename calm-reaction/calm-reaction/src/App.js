@@ -1,5 +1,7 @@
 // import component from react library
 import React, { Component } from 'react';
+// import CSS stylesheet
+import './App.css';
 
 // sets up App class from component
 class App extends Component {
