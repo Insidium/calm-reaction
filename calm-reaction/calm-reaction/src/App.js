@@ -14,16 +14,14 @@ class App extends Component {
 			isNightMode: false,
 			meditationFocus: 'Set meditation focus'
 		};
-		// bind the this keyword for use on toggleAudio
-		this.toggleAudio = this.toggleAudio.bind(this);
-		this.toggleNightMode = this.toggleNightMode.bind(this);
+
 		// define url for audio source
 		this.url = 'https://www.bensound.com/bensound-music/bensound-relaxing.mp3';
 		// define new audio playback from the url above
 		this.audio = new Audio(this.url);
 	}
 	// toggle audio on and off function
-	toggleAudio() {
+	toggleAudio = () => {
 		// if playback is off/paused, change to on
 		if (this.state.isAudioPlaying === false) {
 			this.setState({
@@ -40,9 +38,9 @@ class App extends Component {
 			this.audio.pause();
 		}
 		// console.log(this.state.isAudioPlaying); // test for audio toggle
-	}
+	};
 
-	toggleNightMode() {
+	toggleNightMode = () => {
 		// if (this.state.isNightMode === false) {
 		// 	this.setState({
 		// 		isNightMode: true
@@ -54,10 +52,43 @@ class App extends Component {
 		// }
 		// easy toggle!
 		this.setState({ isNightMode: !this.state.isNightMode });
-	}
+	};
+
+	toggleFocus = () => {
+		const focusPoints = [
+			'gratitude',
+			'wellbeing',
+			'peace',
+			'serenity',
+			'balance',
+			'growth',
+			'transience',
+			'happiness',
+			'inspiration',
+			'kindness'
+		];
+
+		const currentFocus = this.state.meditationFocus;
+		const focusIndex = focusPoints.indexOf(currentFocus);
+		console.log(focusIndex);
+
+		// 1. focusIndex = -1 : Set to [0]
+		if (focusIndex >= 0 && focusIndex < focusPoints.length - 1) {
+			const iterator = focusIndex + 1;
+			this.setState({
+				meditationFocus: focusPoints[iterator]
+			});
+			// 2. focusIndex = not present, back to [0]
+		} else {
+			this.setState({
+				meditationFocus: focusPoints[0]
+			});
+		}
+	};
 	// app render for display in browser
 	render() {
 		const isNightMode = this.state.isNightMode;
+		const meditationFocus = this.state.meditationFocus;
 		const nightModeMessage = isNightMode ? '🌙' : '☀️';
 		return (
 			// main app container
@@ -73,6 +104,8 @@ class App extends Component {
 					<p>{nightModeMessage}</p>
 				</div>
 				<button onClick={this.toggleAudio}>Play</button>
+				<p>{meditationFocus}</p>
+				<button onClick={this.toggleFocus}>Choose Focus</button>
 			</div>
 		);
 	}
